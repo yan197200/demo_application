@@ -5,14 +5,19 @@ class Post < ApplicationRecord
 
     has_many :comments, dependent: :destroy
 
+    has_one :content, class_name: 'ActionText::RichText', as: :record, dependent: :destroy
+    has_rich_text :body
+
+
     has_noticed_notifications model_name: 'Notification'
     has_many :notifications, through: :user, as: :recipient, dependent: :destroy
 
     def self.ransackable_attributes(auth_object = nil)
-        ["body", "created_at", "id", "title", "updated_at", "user_id", "views"]
+        ["created_at", "id", "title", "updated_at", "user_id", "views"]
+        # ["body", "created_at", "id", "title", "updated_at", "user_id", "views"]
     end
 
     def self.ransackable_associations(auth_object = nil)
-        ["comments", "notifications", "user"]
+        ["content", "comments", "notifications", "user"]
     end
 end
